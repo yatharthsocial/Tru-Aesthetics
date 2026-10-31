@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+:root {
+  --hero-marker-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --background: #ffffff;
+  --foreground: #4b6065;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand: #28beb3;
+  --color-brand-deep: #127a73;
+  --color-ink: #1f3034;
+  --color-ink-muted: #2a3b3f;
+  --color-pill: #f1f6f6;
+  --font-sans: var(--font-ubuntu);
+  --font-display: var(--font-italiana);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.hero-anim {
+  --hero-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-play-state: paused;
+}
+
+[data-ready="true"] .hero-anim {
+  animation-play-state: running;
+}
+
+.hero-silk {
+  animation: hero-silk 3.4s var(--hero-ease) both;
+}
+
+.hero-portrait {
+  transform-origin: 50% 40%;
+  animation:
+    hero-portrait 2s var(--hero-ease) 0.15s both,
+    hero-fade 0.6s ease-out 0.15s both;
+}
+
+.hero-wordmark {
+  clip-path: inset(-5% 0);
+  animation: hero-wordmark 1.7s var(--hero-ease) 0.8s both;
+}
+
+.hero-slide-left {
+  animation: hero-slide-left 1.3s var(--hero-ease) 1.55s both;
+}
+
+.hero-slide-right {
+  animation: hero-slide-right 1.3s var(--hero-ease) 1.55s both;
+}
+
+.hero-drop {
+  animation: hero-drop 1.3s var(--hero-ease) 1.2s both;
+}
+
+.hero-rise {
+  animation: hero-rise 1.3s var(--hero-ease) 1.7s both;
+}
+
+@keyframes hero-silk {
+  from {
+    opacity: 0;
+    transform: scale(1.14);
+  }
+}
+
+@keyframes hero-portrait {
+  from {
+    transform: translateY(16%) scale(1.05);
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-wordmark {
+  from {
+    clip-path: inset(-5% 50%);
+    transform: translateY(10%);
+  }
+}
+
+@keyframes hero-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+
+@keyframes hero-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+
+@keyframes hero-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+  }
+}
+
+.hero-marker {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 12px;
+  height: 12px;
+}
+
+.hero-marker::before,
+.hero-marker::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transition:
+    transform 0.5s var(--hero-marker-ease),
+    opacity 0.5s var(--hero-marker-ease);
+}
+
+.hero-marker::before {
+  background: var(--color-brand);
+  box-shadow: 0 0 0 2px #ffffff;
+  opacity: 0.55;
+  transform: scale(0.6);
+}
+
+.hero-marker[data-active="true"]::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-marker::after {
+  border: 1px solid var(--color-brand);
+  opacity: 0;
+}
+
+.hero-marker[data-active="true"]::after {
+  animation: hero-marker-pulse 2s ease-out infinite;
+}
+
+html[data-tour="on"] .head-areas-list {
+  display: none;
+}
+
+@keyframes hero-marker-pulse {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim {
+    animation: none;
+  }
+}
