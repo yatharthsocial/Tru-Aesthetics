@@ -24,6 +24,20 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Lenis smooth scrolling (only active while the scroll tour runs) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
 .hero-anim {
   --hero-ease: cubic-bezier(0.16, 1, 0.3, 1);
   animation-play-state: paused;
@@ -159,7 +173,7 @@ body {
   animation: hero-marker-pulse 2s ease-out infinite;
 }
 
-html[data-tour="on"] .head-areas-list {
+html[data-tour="on"] .tour-fallback {
   display: none;
 }
 
@@ -175,8 +189,81 @@ html[data-tour="on"] .head-areas-list {
   }
 }
 
+/* Fine canvas weave for the framed doctor portrait */
+.canvas-grain {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.42 0 0 0 0 0.38 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0 1px, transparent 1px 3px);
+}
+
+/* Marker tooltips: the line draws out, then the card settles in. */
+.tip-line {
+  transform-origin: left;
+  animation: tip-line 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+}
+
+.flex-row-reverse > .tip-line {
+  transform-origin: right;
+}
+
+.tip-card {
+  animation: tip-card 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.15s both;
+}
+
+@keyframes tip-line {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes tip-card {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+}
+
+/* Hair Transplant: the full hairline is revealed by a soft edge that slides down the forehead,
+   from just above the receded line (24% of the photo) to just below the full one (46%). */
+@property --hair-front {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 24%;
+}
+
+.hair-grow {
+  --hair-front: 24%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--hair-front) - 5%), transparent var(--hair-front));
+  mask-image: linear-gradient(to bottom, #000 calc(var(--hair-front) - 5%), transparent var(--hair-front));
+  transition: --hair-front 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.hair-grow[data-on="true"] {
+  --hair-front: 46%;
+  transition-duration: 2s;
+}
+
+.service-in {
+  animation: service-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes service-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-anim {
+  .hero-anim,
+  .service-in,
+  .tip-line,
+  .tip-card {
     animation: none;
+  }
+
+  .hair-grow {
+    transition: none;
   }
 }

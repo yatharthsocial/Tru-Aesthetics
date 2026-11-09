@@ -21,9 +21,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // Extensions (e.g. QuillBot) add attributes to <html> before React loads; this only
+    // silences attribute mismatches on this one element, not on its children.
     <html
       lang="en"
       className={`${ubuntu.variable} ${italiana.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

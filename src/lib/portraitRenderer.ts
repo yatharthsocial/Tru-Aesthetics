@@ -173,10 +173,13 @@ export async function createPortraitRenderer(
       pixelRatio = Math.min(window.devicePixelRatio, MAX_PIXEL_RATIO);
       canvas.width = Math.round(width * pixelRatio);
       canvas.height = Math.round(height * pixelRatio);
+      gl.useProgram(program);
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(uResolution, canvas.width, canvas.height);
     },
     render(view) {
+      // Two renderers can share one context (React mounts twice in development), so select ours.
+      gl.useProgram(program);
       const { sizeX, sizeY, originX, originY, offsetX, offsetY } = layout(
         view,
         width,

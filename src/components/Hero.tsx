@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AboutContent } from "@/components/About";
 import { HEAD_AREAS } from "@/components/headAreas";
 import HeroStage from "@/components/HeroStage";
 import SiteHeader from "@/components/SiteHeader";
@@ -89,13 +90,11 @@ export default function Hero() {
         ))}
       </div>
 
-      {HEAD_AREAS.map(({ id, name, description, side }, index) => (
+      {HEAD_AREAS.map(({ id, name, description }, index) => (
         <article
           key={id}
           data-tour-card
-          className={`invisible absolute inset-x-4 bottom-6 z-30 rounded-3xl bg-pill p-5 opacity-0 shadow-[0_10px_30px_rgba(45,70,75,0.18)] lg:inset-x-auto lg:top-1/2 lg:bottom-auto lg:w-[340px] lg:-translate-y-1/2 lg:p-7 ${
-            side === "right" ? "lg:right-[6%]" : "lg:left-[6%]"
-          }`}
+          className="invisible absolute inset-x-4 bottom-6 z-30 rounded-3xl bg-pill p-5 opacity-0 shadow-[0_10px_30px_rgba(45,70,75,0.18)] lg:inset-x-auto lg:top-[32%] lg:bottom-auto lg:left-[50%] lg:w-[420px] lg:p-8"
         >
           <p className="text-sm font-medium text-brand-deep">
             0{index + 1} / 0{HEAD_AREAS.length}
@@ -108,6 +107,20 @@ export default function Hero() {
           </p>
         </article>
       ))}
+
+      {/* Fades the foot of the scene into the doctor section that follows the tour. */}
+      <div
+        data-tour-seam
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-40 bg-gradient-to-b from-transparent to-[#eef3f3] opacity-0 lg:h-56"
+      />
+
+      <div
+        data-tour-about
+        className="invisible absolute inset-x-0 bottom-0 z-30 rounded-t-3xl bg-[#eef3f3] p-5 pb-7 opacity-0 shadow-[0_-10px_30px_rgba(45,70,75,0.14)] lg:inset-x-auto lg:top-1/2 lg:right-[6%] lg:bottom-auto lg:left-[50%] lg:-translate-y-1/2 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none"
+      >
+        <AboutContent />
+      </div>
 
       <div
         data-tour-fade

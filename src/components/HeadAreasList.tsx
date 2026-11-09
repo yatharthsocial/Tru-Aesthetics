@@ -4,7 +4,7 @@ export default function HeadAreasList() {
   return (
     <section
       aria-label="Areas of the head"
-      className="head-areas-list mx-auto grid max-w-6xl gap-8 px-5 py-16 md:grid-cols-2 lg:grid-cols-3"
+      className="tour-fallback mx-auto grid max-w-6xl gap-8 px-5 py-16 md:grid-cols-2 lg:grid-cols-3"
     >
       {HEAD_AREAS.map(({ id, name, description }, index) => (
         <article key={id}>
