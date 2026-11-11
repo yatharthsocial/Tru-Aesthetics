@@ -182,7 +182,7 @@ export default function TestimonialsSection() {
           if (event.target === dialog.current) close();
         }}
         aria-label={open?.name ? `${open.name}'s story` : "Patient story"}
-        className="testimonial-dialog m-auto max-h-[92svh] w-[min(420px,92vw)] overflow-visible rounded-[1.75rem] bg-transparent p-0 backdrop:bg-[#1f3034]/80 backdrop:backdrop-blur-sm"
+        className="testimonial-dialog m-auto outline-none max-h-[92svh] w-[min(420px,92vw)] overflow-visible rounded-[1.75rem] bg-transparent p-0 backdrop:bg-[#1f3034]/80 backdrop:backdrop-blur-sm"
       >
         {open && (
           <div className="relative">
@@ -194,7 +194,7 @@ export default function TestimonialsSection() {
               controls
               playsInline
               autoPlay
-              className="aspect-[9/16] max-h-[92svh] w-full rounded-[1.75rem] bg-black object-contain shadow-2xl"
+              className="aspect-[9/16] max-h-[92svh] w-full rounded-[1.75rem] bg-black object-contain shadow-2xl outline-none"
             />
             <button
               type="button"
