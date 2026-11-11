@@ -49,7 +49,7 @@ function StoryCard({
           muted
           loop
           playsInline
-          preload="none"
+          preload="metadata"
           className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
         />
         <span className="absolute inset-0 bg-gradient-to-t from-[#1f3034]/85 via-[#1f3034]/10 to-transparent" />
@@ -82,7 +82,8 @@ export default function TestimonialsSection() {
   const video = useRef<HTMLVideoElement>(null);
   const marquee = useRef<HTMLDivElement>(null);
 
-  // Play the previews that are on screen and pause the rest; keep them still for reduced motion.
+  // Previews play while the section is on screen and pause when it isn't; reduced motion keeps
+  // them on their poster.
   useEffect(() => {
     const root = marquee.current;
     if (
@@ -90,19 +91,19 @@ export default function TestimonialsSection() {
       !window.matchMedia("(prefers-reduced-motion: no-preference)").matches
     )
       return;
+    const clips = [
+      ...root.querySelectorAll<HTMLVideoElement>("video[data-preview]"),
+    ];
     const observer = new IntersectionObserver(
-      (entries) => {
-        for (const { target, isIntersecting } of entries) {
-          const clip = target as HTMLVideoElement;
-          if (isIntersecting) clip.play().catch(() => undefined);
+      ([entry]) => {
+        for (const clip of clips) {
+          if (entry.isIntersecting) clip.play().catch(() => undefined);
           else clip.pause();
         }
       },
-      { rootMargin: "0px 200px" },
+      { rootMargin: "200px 0px" },
     );
-    root
-      .querySelectorAll("video[data-preview]")
-      .forEach((clip) => observer.observe(clip));
+    observer.observe(root);
     return () => observer.disconnect();
   }, []);
 

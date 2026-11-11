@@ -224,14 +224,9 @@ html[data-tour="on"] .tour-fallback {
   }
 }
 
-/* Testimonials: an endless right-to-left drift that pauses while a card is hovered or focused. */
+/* Testimonials: an endless right-to-left drift. */
 .testimonial-track {
   animation: testimonial-marquee 45s linear infinite;
-}
-
-.testimonial-marquee:hover .testimonial-track,
-.testimonial-marquee:focus-within .testimonial-track {
-  animation-play-state: paused;
 }
 
 @keyframes testimonial-marquee {

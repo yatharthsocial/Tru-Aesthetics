@@ -145,7 +145,9 @@ export default function ServicesSection() {
         const step = Math.min(STEPS - 1, Math.floor(self.progress * STEPS));
         setComplete(step === STEPS - 1);
         setActive(Math.min(step, SERVICES.length - 1));
-        if (step !== lastStep) {
+        // Only hold while the visitor is scrolling inside the pin; a jump past it (a nav link,
+        // say) must not be pulled back.
+        if (step !== lastStep && self.isActive) {
           lastStep = step;
           hold(self, step);
         }
