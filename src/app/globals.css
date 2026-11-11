@@ -224,6 +224,34 @@ html[data-tour="on"] .tour-fallback {
   }
 }
 
+/* Testimonials: an endless right-to-left drift that pauses while a card is hovered or focused. */
+.testimonial-track {
+  animation: testimonial-marquee 45s linear infinite;
+}
+
+.testimonial-marquee:hover .testimonial-track,
+.testimonial-marquee:focus-within .testimonial-track {
+  animation-play-state: paused;
+}
+
+@keyframes testimonial-marquee {
+  to {
+    /* One of the three copies, including its trailing gap. */
+    transform: translateX(calc(-100% / 3 - var(--gap) / 3));
+  }
+}
+
+.testimonial-dialog[open] {
+  animation: testimonial-open 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes testimonial-open {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+}
+
 .service-in {
   animation: service-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -239,7 +267,17 @@ html[data-tour="on"] .tour-fallback {
   .hero-anim,
   .service-in,
   .tip-line,
-  .tip-card {
+  .tip-card,
+  .testimonial-dialog[open] {
     animation: none;
+  }
+
+  /* No drift: the row scrolls by hand instead. */
+  .testimonial-track {
+    animation: none;
+  }
+
+  .testimonial-marquee {
+    overflow-x: auto;
   }
 }
