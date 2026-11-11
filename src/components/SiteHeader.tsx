@@ -28,13 +28,11 @@ function Chevron() {
   );
 }
 
-export default function SiteHeader() {
+/** `base` prefixes the in-page links, so they lead back to the home page from other pages. */
+export default function SiteHeader({ base = "" }: { base?: string }) {
   return (
     <header className="hero-anim hero-drop absolute inset-x-0 top-0 z-30 flex items-center justify-between px-5 pt-5 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4 lg:px-[6%] lg:pt-6">
-      <Link
-        href="/"
-        className="justify-self-start"
-      >
+      <Link href="/" className="justify-self-start">
         <Image
           src={logo}
           alt="Tru Aesthetics"
@@ -51,8 +49,8 @@ export default function SiteHeader() {
         {NAV_LINKS.map(({ label, href, hasMenu }, index) => (
           <Link
             key={label}
-            href={href}
-            aria-current={index === 0 ? "page" : undefined}
+            href={href.startsWith("#") ? `${base}${href}` : href}
+            aria-current={index === 0 && !base ? "page" : undefined}
             className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 transition-colors hover:bg-brand/15 aria-[current=page]:bg-foreground aria-[current=page]:text-white xl:px-5"
           >
             {label}
@@ -67,7 +65,7 @@ export default function SiteHeader() {
           <Chevron />
         </span>
         <Link
-          href="#contact"
+          href={`${base}#contact`}
           className="rounded-full border border-foreground/70 px-4 py-2.5 xl:px-6 text-sm font-medium tracking-wide whitespace-nowrap text-foreground transition-colors hover:bg-foreground hover:text-white"
         >
           Book now
@@ -89,7 +87,10 @@ export default function SiteHeader() {
             strokeLinecap="round"
           >
             <path d="M3 6.5h14M3 13.5h14" className="group-open:hidden" />
-            <path d="m5 5 10 10M15 5 5 15" className="hidden group-open:block" />
+            <path
+              d="m5 5 10 10M15 5 5 15"
+              className="hidden group-open:block"
+            />
           </svg>
         </summary>
         <nav
@@ -99,7 +100,7 @@ export default function SiteHeader() {
           {NAV_LINKS.map(({ label, href }) => (
             <Link
               key={label}
-              href={href}
+              href={href.startsWith("#") ? `${base}${href}` : href}
               className="rounded-full px-4 py-2.5 hover:bg-brand/15"
             >
               {label}

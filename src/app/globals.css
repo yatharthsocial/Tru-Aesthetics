@@ -200,7 +200,7 @@ html[data-tour="on"] .tour-fallback {
 /* Marker tooltips: the line draws out, then the card settles in. */
 .tip-line {
   transform-origin: left;
-  animation: tip-line 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+  animation: tip-line 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
 }
 
 .flex-row-reverse > .tip-line {
@@ -208,7 +208,7 @@ html[data-tour="on"] .tour-fallback {
 }
 
 .tip-card {
-  animation: tip-card 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.15s both;
+  animation: tip-card 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.15s both;
 }
 
 @keyframes tip-line {
@@ -222,26 +222,6 @@ html[data-tour="on"] .tour-fallback {
     opacity: 0;
     transform: translateY(6px) scale(0.96);
   }
-}
-
-/* Hair Transplant: the full hairline is revealed by a soft edge that slides down the forehead,
-   from just above the receded line (24% of the photo) to just below the full one (46%). */
-@property --hair-front {
-  syntax: "<percentage>";
-  inherits: false;
-  initial-value: 24%;
-}
-
-.hair-grow {
-  --hair-front: 24%;
-  -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--hair-front) - 5%), transparent var(--hair-front));
-  mask-image: linear-gradient(to bottom, #000 calc(var(--hair-front) - 5%), transparent var(--hair-front));
-  transition: --hair-front 0.9s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.hair-grow[data-on="true"] {
-  --hair-front: 46%;
-  transition-duration: 2s;
 }
 
 .service-in {
@@ -261,9 +241,5 @@ html[data-tour="on"] .tour-fallback {
   .tip-line,
   .tip-card {
     animation: none;
-  }
-
-  .hair-grow {
-    transition: none;
   }
 }

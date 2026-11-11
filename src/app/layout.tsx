@@ -15,8 +15,9 @@ const italiana = Italiana({
 });
 
 export const metadata: Metadata = {
-  title: "Tru Aesthetics",
-  description: "Experts in timeless beauty.",
+  title: "Trú Aesthetics | Cosmetic Surgery & Hair Transplant, Mangaluru",
+  description:
+    "Cosmetic surgery and hair transplant clinic in Bendoor, Mangaluru, in association with Dr Mohan Thomas Aesthetics, Mumbai.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

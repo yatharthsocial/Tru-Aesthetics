@@ -90,16 +90,13 @@ export default function Hero() {
         ))}
       </div>
 
-      {HEAD_AREAS.map(({ id, name, description }, index) => (
+      {HEAD_AREAS.map(({ id, name, description }) => (
         <article
           key={id}
           data-tour-card
           className="invisible absolute inset-x-4 bottom-6 z-30 rounded-3xl bg-pill p-5 opacity-0 shadow-[0_10px_30px_rgba(45,70,75,0.18)] lg:inset-x-auto lg:top-[32%] lg:bottom-auto lg:left-[50%] lg:w-[420px] lg:p-8"
         >
-          <p className="text-sm font-medium text-brand-deep">
-            0{index + 1} / 0{HEAD_AREAS.length}
-          </p>
-          <h2 className="mt-1 font-display text-3xl text-foreground lg:mt-2 lg:text-4xl">
+          <h2 className="font-display text-3xl text-foreground lg:mt-2 lg:text-4xl">
             {name}
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-ink-muted lg:mt-3 lg:text-base">
@@ -117,7 +114,7 @@ export default function Hero() {
 
       <div
         data-tour-about
-        className="invisible absolute inset-x-0 bottom-0 z-30 rounded-t-3xl bg-[#eef3f3] p-5 pb-7 opacity-0 shadow-[0_-10px_30px_rgba(45,70,75,0.14)] lg:inset-x-auto lg:top-1/2 lg:right-[6%] lg:bottom-auto lg:left-[50%] lg:-translate-y-1/2 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none"
+        className="invisible absolute inset-x-0 bottom-0 z-30 rounded-t-3xl bg-[#eef3f3] p-5 pb-7 opacity-0 shadow-[0_-10px_30px_rgba(45,70,75,0.14)] lg:inset-x-auto lg:top-[calc(50%+3rem)] lg:right-[6%] lg:bottom-auto lg:left-[50%] lg:-translate-y-1/2 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none"
       >
         <AboutContent />
       </div>

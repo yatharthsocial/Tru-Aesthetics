@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { setSmoothScroll } from "@/lib/smoothScroll";
 import { HEAD_AREAS } from "@/components/headAreas";
 import {
   createPortraitRenderer,
@@ -34,8 +35,20 @@ const REST_VIEW: PortraitView = {
 
 // Once it has moved aside, the head holds one still pose: on the left on desktop,
 // at the top on phones. The cards and the About panel own the remaining space.
-const DESKTOP_POSE = { zoom: 1.02, focusX: 0.5, focusY: 0.4, panX: -0.24, panY: 0.02 };
-const MOBILE_POSE = { zoom: 1.2, focusX: 0.5, focusY: 0.24, panX: 0, panY: -0.445 };
+const DESKTOP_POSE = {
+  zoom: 1.02,
+  focusX: 0.5,
+  focusY: 0.4,
+  panX: -0.24,
+  panY: 0.02,
+};
+const MOBILE_POSE = {
+  zoom: 1.2,
+  focusX: 0.5,
+  focusY: 0.24,
+  panX: 0,
+  panY: -0.445,
+};
 
 type HeroStageProps = {
   colorUrl: string;
@@ -73,6 +86,7 @@ function buildTour(
   lenis.on("scroll", ScrollTrigger.update);
   gsap.ticker.add(raf);
   gsap.ticker.lagSmoothing(0);
+  setSmoothScroll(lenis);
 
   const view = { ...REST_VIEW };
   // `active` is fractional mid-turn, so the leader line glides from one area to the next.
@@ -102,7 +116,9 @@ function buildTour(
     const lineEnd = mix(cardEdge(from), cardEdge(to), progress);
 
     renderer.render(view);
-    const points = HEAD_AREAS.map((area) => renderer.project(area.anchor, view));
+    const points = HEAD_AREAS.map((area) =>
+      renderer.project(area.anchor, view),
+    );
     points.forEach(({ x, y }, index) => {
       markers[index].style.transform = `translate(${x}px, ${y}px)`;
     });
@@ -155,7 +171,8 @@ function buildTour(
       trigger: stage,
       pin: true,
       start: "top top",
-      end: () => `+=${tour.duration() * SCROLL_PER_SECOND * window.innerHeight}`,
+      end: () =>
+        `+=${tour.duration() * SCROLL_PER_SECOND * window.innerHeight}`,
       scrub: 0.6,
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -163,10 +180,21 @@ function buildTour(
   });
 
   // Slide the head aside once, then point at the first area.
-  tour.to(heroText, { autoAlpha: 0, y: -40, duration: 0.7, ease: "power2.inOut" }, 0);
+  tour.to(
+    heroText,
+    { autoAlpha: 0, y: -40, duration: 0.7, ease: "power2.inOut" },
+    0,
+  );
   tour.to(
     view,
-    { ...pose, yaw: 0, pitch: 0, duration: INTRO, ease: "power3.inOut", immediateRender: false },
+    {
+      ...pose,
+      yaw: 0,
+      pitch: 0,
+      duration: INTRO,
+      ease: "power3.inOut",
+      immediateRender: false,
+    },
     0,
   );
   tour.to(markerLayer, { autoAlpha: 1, duration: 0.4 }, INTRO - 0.5);
@@ -180,7 +208,11 @@ function buildTour(
 
     if (index < last) {
       // The head stays still; the line slides to the next marker while the cards cross-fade.
-      tour.to(link, { active: index + 1, duration: AREA_SWITCH, ease: "sine.inOut" }, leave);
+      tour.to(
+        link,
+        { active: index + 1, duration: AREA_SWITCH, ease: "sine.inOut" },
+        leave,
+      );
       tour.to(cards[index], cardOut, leave);
       tour.to(cards[index + 1], cardIn, leave + AREA_SWITCH - 0.6);
       return;
@@ -188,7 +220,11 @@ function buildTour(
 
     // The pointers clear and the About panel rises in, one piece at a time.
     tour.to(cards[index], cardOut, leave);
-    tour.to(markerLayer, { autoAlpha: 0, duration: 0.5, ease: "power2.inOut" }, leave);
+    tour.to(
+      markerLayer,
+      { autoAlpha: 0, duration: 0.5, ease: "power2.inOut" },
+      leave,
+    );
     tour.to(link, { strength: 0, duration: 0.4 }, leave);
     tour.to(seam, { opacity: 1, duration: 1.2, ease: "power2.inOut" }, leave);
     tour.addLabel("about", leave + 0.6);
@@ -206,9 +242,12 @@ function buildTour(
     const target = event.target as Element | null;
     if (!target?.closest('a[href="#about"]') || !tour.scrollTrigger) return;
     event.preventDefault();
-    lenis.scrollTo(tour.scrollTrigger.labelToScroll("about") + window.innerHeight, {
-      duration: 2.4,
-    });
+    lenis.scrollTo(
+      tour.scrollTrigger.labelToScroll("about") + window.innerHeight,
+      {
+        duration: 2.4,
+      },
+    );
   };
   document.addEventListener("click", onClick);
 
@@ -216,6 +255,7 @@ function buildTour(
     document.removeEventListener("click", onClick);
     gsap.ticker.remove(raf);
     gsap.ticker.lagSmoothing(500, 33);
+    setSmoothScroll(null);
     lenis.destroy();
     resizeObserver.disconnect();
     canvas.style.opacity = "";
