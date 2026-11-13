@@ -157,10 +157,7 @@ export default function TestimonialsSection() {
 
       {/* Three copies of the row slide left by exactly one copy per loop, so there is no seam
           even on very wide screens. */}
-      <div
-        ref={marquee}
-        className="testimonial-marquee mt-12 lg:mt-16 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]"
-      >
+      <div ref={marquee} className="testimonial-marquee mt-12 lg:mt-16">
         <ul className="testimonial-track flex w-max gap-[var(--gap)] py-4 [--gap:1.25rem] lg:[--gap:1.5rem]">
           {[0, 1, 2].map((copy) =>
             TESTIMONIALS.map((story) => (

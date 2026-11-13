@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { AboutContent } from "@/components/About";
 import { HEAD_AREAS } from "@/components/headAreas";
 import HeroStage from "@/components/HeroStage";
@@ -117,18 +116,6 @@ export default function Hero() {
         className="invisible absolute inset-x-0 bottom-0 z-30 rounded-t-3xl bg-[#eef3f3] p-5 pb-7 opacity-0 shadow-[0_-10px_30px_rgba(45,70,75,0.14)] lg:inset-x-auto lg:top-[calc(50%+3rem)] lg:right-[6%] lg:bottom-auto lg:left-[50%] lg:-translate-y-1/2 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none"
       >
         <AboutContent />
-      </div>
-
-      <div
-        data-tour-fade
-        className="absolute bottom-7 left-1/2 z-20 -translate-x-1/2 lg:right-[6%] lg:bottom-[11%] lg:left-auto lg:translate-x-0"
-      >
-        <Link
-          href="#contact"
-          className="hero-anim hero-rise block rounded-full bg-brand px-12 py-4 text-base font-medium tracking-wide whitespace-nowrap text-ink shadow-[0_8px_20px_rgba(18,122,115,0.28)] transition-colors hover:bg-brand-deep hover:text-white lg:px-16"
-        >
-          Book now
-        </Link>
       </div>
     </HeroStage>
   );

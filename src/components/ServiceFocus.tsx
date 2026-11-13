@@ -6,9 +6,6 @@ import hair40 from "@/hairline/recede-0.4.webp";
 import hair60 from "@/hairline/recede-0.6.webp";
 import hair80 from "@/hairline/recede-0.8.webp";
 import receded from "@/hairline/recede-1.webp";
-import browsBefore from "@/brows-before.webp";
-import earsBefore from "@/ears-before.webp";
-import eyelidsBefore from "@/eyelids-before.webp";
 import lipsBefore from "@/lips-before.webp";
 import upperlipBefore from "@/upperlip-before.webp";
 import portrait from "@/model-female.webp";
@@ -21,17 +18,33 @@ const HAIR_STEP_MS = 180;
 
 // Each concern as a layer over just that area of her face; it fades out once treated.
 const BEFORE_LAYERS = [
-  { fix: "eyelids", src: eyelidsBefore },
-  { fix: "brows", src: browsBefore },
-  { fix: "ears", src: earsBefore },
   { fix: "lips", src: lipsBefore },
   { fix: "upperlip", src: upperlipBefore },
 ] as const;
 
 export const ALL_FIXES = SERVICES.map((service) => service.fix);
 
-// The marker follows the row highlight closely, while the change itself plays.
-const MARKER_DELAY_S = 0.3;
+// The marker and tooltip arrive together with the treatment's text, in one short, eased
+// entrance (see SYNC_S), so the words and the tooltip always appear as a pair.
+const MARKER_DELAY_S = 0;
+/** How long the tooltip's entrance takes; matches the description's fade in ServicesSection. */
+export const SYNC_S = 0.6;
+/** When a treatment points at several areas, each area follows the one before by this much. */
+export const STAGGER_S = 0.25;
+
+/**
+ * The turn each marker appears in: the areas with a tooltip one after another, and a marker
+ * without one (the other eye, the other side of the mouth) along with the tooltip at its height.
+ */
+export function revealOrder(points: { y: number; note?: string }[]) {
+  const noted = points.filter((point) => point.note);
+  return points.map((point) => {
+    const partner = point.note
+      ? point
+      : noted.find((other) => Math.abs(other.y - point.y) < 0.02);
+    return partner ? noted.indexOf(partner) : 0;
+  });
+}
 
 /** A short frosted label beside a marker, opening away from the face. */
 function MarkerTip({
@@ -54,13 +67,19 @@ function MarkerTip({
     >
       <span
         className="tip-line h-px w-8 bg-brand-deep/60"
-        style={{ animationDelay: `${delay + 0.35}s` }}
+        style={{
+          animationDelay: `${delay}s`,
+          animationDuration: `${SYNC_S}s`,
+        }}
       />
       <span
         className={`tip-card w-[190px] rounded-2xl bg-pill/95 px-3.5 py-2.5 shadow-[0_8px_24px_rgba(45,70,75,0.18)] backdrop-blur-sm ${
           side === "right" ? "text-left" : "text-right"
         }`}
-        style={{ animationDelay: `${delay + 0.55}s` }}
+        style={{
+          animationDelay: `${delay}s`,
+          animationDuration: `${SYNC_S}s`,
+        }}
       >
         {label && (
           <span className="block text-[11px] font-medium tracking-[0.18em] text-brand-deep uppercase">
@@ -100,8 +119,10 @@ export default function ServiceFocus({
   const done = new Set<Fix>(
     applied ?? (complete ? ALL_FIXES : engaged ? [service.fix] : []),
   );
-  // At rest she shows no markers; they appear while a service is shown.
-  const points = engaged && !complete ? service.points : [];
+  // At rest she shows no markers; they appear while a service is shown. In the finale the
+  // last treatment's markers stay a moment, fading away (see the wrapper below).
+  const points = engaged || complete ? service.points : [];
+  const order = revealOrder(points);
   const restoresHair = done.has("hairline");
   const rejuvenates = done.has("skin");
   const markerDelay = MARKER_DELAY_S;
@@ -180,32 +201,38 @@ export default function ServiceFocus({
             />
           </div>
 
-          {points.map(({ x, y, label, note }, i) => (
-            <span
-              key={`${index}-${i}`}
-              className="service-in absolute"
-              style={{
-                left: `${x * 100}%`,
-                top: `${y * 100}%`,
-                animationDelay: `${markerDelay}s`,
-              }}
-            >
-              <span className="hero-marker" data-active="true" />
-              {note && numbered && (
-                <span className="absolute top-2.5 left-2.5 flex size-4 items-center justify-center rounded-full bg-foreground text-[9px] font-medium text-white lg:hidden">
-                  {notes.findIndex((item) => item.number === i + 1) + 1}
-                </span>
-              )}
-              {note && (
-                <MarkerTip
-                  label={label}
-                  note={note}
-                  side={x < 0.5 ? "left" : "right"}
-                  delay={markerDelay}
-                />
-              )}
-            </span>
-          ))}
+          <div
+            className="pointer-events-none absolute inset-0 transition-opacity duration-700 ease-in-out"
+            style={{ opacity: complete ? 0 : 1 }}
+          >
+            {points.map(({ x, y, label, note }, i) => (
+              <span
+                key={`${index}-${i}`}
+                className="service-in absolute"
+                style={{
+                  left: `${x * 100}%`,
+                  top: `${y * 100}%`,
+                  animationDelay: `${markerDelay + order[i] * STAGGER_S}s`,
+                  animationDuration: `${SYNC_S}s`,
+                }}
+              >
+                <span className="hero-marker" data-active="true" />
+                {note && numbered && (
+                  <span className="absolute top-2.5 left-2.5 flex size-4 items-center justify-center rounded-full bg-foreground text-[9px] font-medium text-white lg:hidden">
+                    {notes.findIndex((item) => item.number === i + 1) + 1}
+                  </span>
+                )}
+                {note && (
+                  <MarkerTip
+                    label={label}
+                    note={note}
+                    side={x < 0.5 ? "left" : "right"}
+                    delay={markerDelay + order[i] * STAGGER_S}
+                  />
+                )}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 

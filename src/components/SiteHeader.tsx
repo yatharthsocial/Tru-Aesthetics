@@ -2,12 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "@/logo-true-aesthetics.webp";
 
+// One link per section of the home page, in page order.
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "Services", href: "#services", hasMenu: true },
-  { label: "Transformations", href: "#transformations" },
   { label: "About us", href: "#about" },
-  { label: "Blog", href: "#blog" },
+  { label: "Doctors", href: "#doctor" },
+  { label: "Services", href: "#services" },
+  { label: "Treatments", href: "#treatments" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -44,17 +47,16 @@ export default function SiteHeader({ base = "" }: { base?: string }) {
 
       <nav
         aria-label="Primary"
-        className="hidden items-center gap-1 rounded-full bg-pill/95 p-1.5 text-sm font-medium text-foreground shadow-[0_6px_18px_rgba(45,70,75,0.14)] lg:flex xl:gap-2"
+        className="hidden items-center gap-0.5 rounded-full bg-pill/95 p-1.5 text-sm font-medium text-foreground shadow-[0_6px_18px_rgba(45,70,75,0.14)] lg:flex xl:gap-1"
       >
-        {NAV_LINKS.map(({ label, href, hasMenu }, index) => (
+        {NAV_LINKS.map(({ label, href }, index) => (
           <Link
             key={label}
             href={href.startsWith("#") ? `${base}${href}` : href}
             aria-current={index === 0 && !base ? "page" : undefined}
-            className="flex items-center gap-1.5 rounded-full px-3.5 py-2.5 transition-colors hover:bg-brand/15 aria-[current=page]:bg-foreground aria-[current=page]:text-white xl:px-5"
+            className="flex items-center gap-1.5 rounded-full px-3 py-2.5 whitespace-nowrap transition-colors hover:bg-brand/15 aria-[current=page]:bg-foreground aria-[current=page]:text-white xl:px-4"
           >
             {label}
-            {hasMenu && <Chevron />}
           </Link>
         ))}
       </nav>
@@ -64,12 +66,6 @@ export default function SiteHeader({ base = "" }: { base?: string }) {
           EN
           <Chevron />
         </span>
-        <Link
-          href={`${base}#contact`}
-          className="rounded-full border border-foreground/70 px-4 py-2.5 xl:px-6 text-sm font-medium tracking-wide whitespace-nowrap text-foreground transition-colors hover:bg-foreground hover:text-white"
-        >
-          Book now
-        </Link>
       </div>
 
       <details className="group relative lg:hidden">

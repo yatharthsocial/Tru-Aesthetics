@@ -1,6 +1,5 @@
 // Treatments shown on the model. Names and descriptions follow the clinic's own copy (see clinic.ts).
-export type Fix =
-  "hairline" | "eyelids" | "brows" | "ears" | "lips" | "upperlip" | "skin";
+export type Fix = "hairline" | "lips" | "upperlip" | "skin";
 
 export const SERVICES: {
   name: string;
@@ -30,51 +29,6 @@ export const SERVICES: {
     ],
     fix: "hairline",
     featured: true,
-  },
-  {
-    name: "Eyelid Surgery",
-    category: "Surgical",
-    fix: "eyelids",
-    description:
-      "Our surgeons address excess skin, puffiness, and drooping, revealing eyes that radiate youth and vitality.",
-    points: [
-      {
-        x: 0.592,
-        y: 0.516,
-        label: "Eyelids",
-        note: "Excess skin gently removed to open up tired-looking eyes.",
-      },
-    ],
-  },
-  {
-    name: "Eyebrow Lift",
-    category: "Surgical",
-    fix: "brows",
-    description:
-      "Achieve a more youthful and awake look as our surgeons artfully sculpt and reposition your eyebrows.",
-    points: [
-      {
-        x: 0.6,
-        y: 0.494,
-        label: "Brow line",
-        note: "A heavy brow is raised for a more rested, open look.",
-      },
-    ],
-  },
-  {
-    name: "Otoplasty",
-    fix: "ears",
-    category: "Surgical",
-    description:
-      "Our surgeons specialise in reshaping and repositioning ears, providing a harmonious balance to your facial features.",
-    points: [
-      {
-        x: 0.712,
-        y: 0.592,
-        label: "Ears",
-        note: "Reshaped or set back to sit closer to the head.",
-      },
-    ],
   },
   {
     name: "Lip Augmentation",
@@ -125,13 +79,14 @@ export const SERVICES: {
         note: "Fine lines at the corners of the eyes smoothed.",
       },
       { x: 0.642, y: 0.53 },
+      { x: 0.45, y: 0.643 },
       {
-        x: 0.45,
+        // Labelled on the right-hand side, so its tooltip opens clear of the crow's feet one.
+        x: 0.558,
         y: 0.643,
         label: "Smile lines",
         note: "Folds beside the mouth softened with dermal fillers.",
       },
-      { x: 0.558, y: 0.643 },
     ],
     fix: "skin",
   },
