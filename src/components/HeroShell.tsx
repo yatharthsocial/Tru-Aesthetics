@@ -102,7 +102,7 @@ export default function HeroShell({ children }: { children: React.ReactNode }) {
         poster="/hero/hero-poster.jpg"
         className="hero-anim hero-silk absolute inset-0 size-full object-cover object-[70%_center] lg:object-center"
       >
-        <source src="/hero/hero.mp4" type="video/mp4" />
+        <source src="/hero/finaltru.mp4" type="video/mp4" />
       </video>
 
       {/* Light washes: under the header, at the foot (melting into the next section), and

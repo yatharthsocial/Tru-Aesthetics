@@ -62,12 +62,17 @@ export default function SiteMenu({ base = "" }: { base?: string }) {
     const button = opener.current;
     root.style.overflow = "hidden";
     lenis?.stop();
-    firstLink.current?.focus({ preventScroll: true });
+    // Once the panel is visible (it is inert while hidden), move focus into it.
+    const focusTimer = window.setTimeout(
+      () => firstLink.current?.focus({ preventScroll: true }),
+      60,
+    );
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => {
+      window.clearTimeout(focusTimer);
       window.removeEventListener("keydown", onKey);
       root.style.overflow = "";
       lenis?.start();
