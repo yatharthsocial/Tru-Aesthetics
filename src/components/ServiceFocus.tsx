@@ -105,6 +105,7 @@ export default function ServiceFocus({
   complete = false,
   applied,
   className = "",
+  noteList = true,
 }: {
   index: number;
   /** Whether a visitor is on the service right now; markers show only then. */
@@ -114,6 +115,8 @@ export default function ServiceFocus({
   /** Fixes already applied (scroll tour). Without it, only the hovered service's fix shows. */
   applied?: Fix[];
   className?: string;
+  /** Phones: list the tooltips under the face (off when the page shows the notes itself). */
+  noteList?: boolean;
 }) {
   const service = SERVICES[index];
   const done = new Set<Fix>(
@@ -217,7 +220,7 @@ export default function ServiceFocus({
                 }}
               >
                 <span className="hero-marker" data-active="true" />
-                {note && numbered && (
+                {note && numbered && noteList && (
                   <span className="absolute top-2.5 left-2.5 flex size-4 items-center justify-center rounded-full bg-foreground text-[9px] font-medium text-white lg:hidden">
                     {notes.findIndex((item) => item.number === i + 1) + 1}
                   </span>
@@ -236,7 +239,10 @@ export default function ServiceFocus({
         </div>
       </div>
 
-      <ol key={index} className="mt-3 space-y-2 lg:hidden">
+      <ol
+        key={index}
+        className={noteList ? "mt-3 space-y-2 lg:hidden" : "hidden"}
+      >
         {notes.map(({ label, note, number }, i) => (
           <li
             key={number}
