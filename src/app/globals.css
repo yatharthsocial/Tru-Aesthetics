@@ -279,3 +279,17 @@ html.lenis body {
     overflow-x: auto;
   }
 }
+
+/* WhatsApp button: a soft ring that swells and fades every few seconds. */
+@keyframes whatsapp-ping {
+  0% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+
+  45%,
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}

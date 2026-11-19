@@ -10,9 +10,11 @@ export const CLINIC = {
   mapUrl:
     "https://www.google.com/maps/search/?api=1&query=Lotus+Paradise+Plaza+Bendoor+Mangaluru+575002",
   phones: ["+91 78923 45181", "+91 89040 36655"],
+  /** The number patients message on WhatsApp (the floating chat button). */
+  whatsapp: "+91 78923 45181",
   email: "drkirash@truaesthetics.in",
   hours: [
-    { days: "Monday – Saturday", time: "10:00 am – 8:00 pm" },
+    { days: "Monday to Saturday", time: "10:00 am to 8:00 pm" },
     { days: "Sunday", time: "Closed" },
   ],
 };

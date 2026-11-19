@@ -14,7 +14,7 @@ export const DOCTOR = {
     { value: "MDS · AFCS", label: "Oral & Maxillofacial Surgery" },
   ],
   points: [
-    "MDS (OMFS), AFCS — Maxillofacial Surgeon",
+    "MDS (OMFS), AFCS, Maxillofacial Surgeon",
     "Fellowship in Advanced Cosmetic Surgery, Mumbai",
     "Resident Member of the American Association of Cosmetic Surgery (AACS)",
     "Facial Plastic and Cosmetic Surgeon",
