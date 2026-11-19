@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { label: "Services", href: "#services" },
   { label: "Treatments", href: "#treatments" },
   { label: "Testimonials", href: "#testimonials" },
+  { label: "Hair transplant", href: "#hair-transplant" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];

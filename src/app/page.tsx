@@ -2,6 +2,7 @@ import AboutSection from "@/components/About";
 import ContactSection from "@/components/ContactSection";
 import DoctorSection from "@/components/DoctorSection";
 import FaqSection from "@/components/FaqSection";
+import HairTransplantSection from "@/components/HairTransplantSection";
 import Hero from "@/components/Hero";
 import ServicesSection from "@/components/ServicesSection";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -19,6 +20,7 @@ export default function Home() {
         <ServicesSection />
         <TreatmentsCatalog />
         <TestimonialsSection />
+        <HairTransplantSection />
         <FaqSection />
       </main>
       <ContactSection />
