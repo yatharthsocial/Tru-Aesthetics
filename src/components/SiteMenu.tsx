@@ -102,14 +102,15 @@ export default function SiteMenu({ base = "" }: { base?: string }) {
     <div
       id={panelId}
       role="dialog"
+      data-lenis-prevent
       aria-modal="true"
       aria-label="Menu"
       inert={!open}
-      className={`fixed inset-0 z-[60] overflow-y-auto bg-[#eef3f3]/97 backdrop-blur-md transition-[opacity,visibility] duration-500 ease-out ${
+      className={`fixed inset-0 z-[60] overflow-y-auto overscroll-contain bg-[#eef3f3]/97 backdrop-blur-md transition-[opacity,visibility] duration-500 ease-out ${
         open ? "visible opacity-100" : "invisible opacity-0"
       }`}
     >
-      <div className="mx-auto flex min-h-full max-w-[1400px] flex-col px-5 pt-5 pb-10 lg:px-[6%] lg:pt-6">
+      <div className="mx-auto flex min-h-full max-w-[1400px] flex-col px-5 pt-5 pb-[max(2rem,env(safe-area-inset-bottom))] lg:px-[6%] lg:pt-6 lg:pb-10">
         <div className="flex justify-end">
           <button
             type="button"
@@ -121,7 +122,7 @@ export default function SiteMenu({ base = "" }: { base?: string }) {
           </button>
         </div>
 
-        <div className="mt-8 grid flex-1 gap-12 lg:mt-4 lg:grid-cols-[7fr_5fr] lg:items-center lg:gap-16">
+        <div className="mt-4 grid flex-1 content-start gap-7 lg:mt-4 lg:content-center lg:grid-cols-[7fr_5fr] lg:items-center lg:gap-16">
           <nav aria-label="Primary">
             <ol>
               {NAV_LINKS.map(({ label, href }, index) => (
@@ -140,7 +141,7 @@ export default function SiteMenu({ base = "" }: { base?: string }) {
                     ref={index === 0 ? firstLink : undefined}
                     href={href === "#top" ? base || "/" : `${base}${href}`}
                     onClick={(event) => go(event, href)}
-                    className="group flex items-baseline gap-5 py-1.5 font-display text-4xl leading-tight text-foreground transition-colors hover:text-brand-deep focus-visible:text-brand-deep focus-visible:outline-none sm:text-5xl lg:text-6xl"
+                    className="group flex items-baseline gap-4 py-0.5 font-display text-[1.6rem] leading-tight sm:gap-5 sm:py-1.5 text-foreground transition-colors hover:text-brand-deep focus-visible:text-brand-deep focus-visible:outline-none sm:text-5xl lg:text-5xl xl:text-[3.25rem]"
                   >
                     <span className="w-8 font-sans text-sm text-ink-muted/70 transition-colors group-hover:text-brand-deep">
                       0{index + 1}
@@ -155,7 +156,7 @@ export default function SiteMenu({ base = "" }: { base?: string }) {
           </nav>
 
           <div
-            className={`border-t border-foreground/15 pt-8 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12 ${
+            className={`border-t border-foreground/15 pt-6 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12 ${
               open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
             style={{ transitionDelay: open ? "450ms" : "0ms" }}
@@ -163,14 +164,14 @@ export default function SiteMenu({ base = "" }: { base?: string }) {
             <p className="text-sm font-medium tracking-[0.2em] text-brand-deep uppercase">
               Visit us
             </p>
-            <address className="mt-3 text-base leading-relaxed text-ink-muted not-italic">
+            <address className="mt-3 text-sm leading-relaxed text-ink-muted not-italic sm:text-base">
               {CLINIC.address.map((line) => (
                 <span key={line} className="block">
                   {line}
                 </span>
               ))}
             </address>
-            <div className="mt-6 space-y-1 text-base">
+            <div className="mt-4 space-y-1 text-sm sm:mt-6 sm:text-base">
               {CLINIC.phones.map((phone) => (
                 <a
                   key={phone}
@@ -187,7 +188,7 @@ export default function SiteMenu({ base = "" }: { base?: string }) {
                 {CLINIC.email}
               </a>
             </div>
-            <p className="mt-6 text-sm text-ink-muted">
+            <p className="mt-4 text-sm text-ink-muted sm:mt-6">
               {CLINIC.hours[0].days}, {CLINIC.hours[0].time}
             </p>
           </div>
