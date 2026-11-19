@@ -1,3 +1,5 @@
+import Reveal from "@/components/Reveal";
+
 // "Our Commitment to Your Confidence", as supplied by the clinic.
 const POINTS = [
   {
@@ -14,57 +16,71 @@ const POINTS = [
   },
 ];
 
-export function AboutContent() {
-  return (
-    <>
-      <p
-        data-about-item
-        className="text-sm font-medium tracking-[0.2em] text-brand-deep uppercase"
-      >
-        About us
-      </p>
-      <h2
-        data-about-item
-        className="mt-2 font-display text-3xl leading-tight sm:text-4xl lg:mt-3 text-foreground lg:text-5xl"
-      >
-        The Science behind Trú Aesthetics
-      </h2>
-      <p
-        data-about-item
-        className="mt-3 text-sm leading-relaxed text-ink-muted sm:text-base lg:mt-5 lg:text-base xl:text-lg"
-      >
-        Trú Aesthetics, in association with Dr Mohan Thomas Aesthetics Mumbai,
-        is an exclusive Cosmetic Surgery and Hair Transplant clinic to meet a
-        spectrum of cosmetic rejuvenation. We pride ourselves in using state of
-        the art infrastructure and USFDA approved technology located in the
-        heart of Mangalore city.
-      </p>
-      <ul className="mt-7 hidden gap-5 lg:grid lg:grid-cols-3">
-        {POINTS.map(({ title, text }) => (
-          <li
-            key={title}
-            data-about-item
-            className="border-t border-foreground/20 pt-4"
-          >
-            <h3 className="font-medium text-foreground">{title}</h3>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">
-              {text}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </>
-  );
-}
-
-/** Shown in place of the scroll tour when it is off (reduced motion, no WebGL). */
 export default function AboutSection() {
   return (
     <section
       id="about"
-      className="tour-fallback mx-auto max-w-3xl px-5 py-16 lg:py-24"
+      aria-labelledby="about-heading"
+      className="relative isolate bg-[#eef3f3] px-5 pt-16 pb-24 lg:px-[6%] lg:pt-24 lg:pb-32"
     >
-      <AboutContent />
+      <Reveal className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-[6fr_5fr] lg:items-end lg:gap-16 xl:gap-24">
+        <div>
+          <p
+            data-reveal
+            className="text-sm font-medium tracking-[0.2em] text-brand-deep uppercase"
+          >
+            About us
+          </p>
+          <h2
+            id="about-heading"
+            data-reveal
+            className="mt-3 font-display text-4xl leading-tight text-foreground sm:text-5xl xl:text-6xl"
+          >
+            The Science behind{" "}
+            <span className="text-brand">Trú Aesthetics</span>
+          </h2>
+          <p
+            data-reveal
+            className="mt-6 max-w-2xl text-base leading-relaxed text-ink-muted lg:text-lg"
+          >
+            Trú Aesthetics, in association with Dr Mohan Thomas Aesthetics
+            Mumbai, is an exclusive Cosmetic Surgery and Hair Transplant clinic
+            to meet a spectrum of cosmetic rejuvenation. We pride ourselves in
+            using state of the art infrastructure and USFDA approved technology
+            located in the heart of Mangalore city.
+          </p>
+        </div>
+
+        <div>
+          <p
+            data-reveal
+            className="text-sm font-medium tracking-[0.2em] text-ink-muted uppercase"
+          >
+            Our commitment to your confidence
+          </p>
+          <ul className="mt-5 grid gap-6 sm:grid-cols-3 lg:grid-cols-1 lg:gap-0">
+            {POINTS.map(({ title, text }, index) => (
+              <li
+                key={title}
+                data-reveal
+                className="flex gap-5 border-t border-foreground/15 pt-5 lg:py-6"
+              >
+                <span className="font-display text-2xl text-brand">
+                  0{index + 1}
+                </span>
+                <div>
+                  <h3 className="text-lg font-medium text-foreground">
+                    {title}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+                    {text}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Reveal>
     </section>
   );
 }

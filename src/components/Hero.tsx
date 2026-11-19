@@ -1,122 +1,61 @@
 import Image from "next/image";
-import { AboutContent } from "@/components/About";
-import { HEAD_AREAS } from "@/components/headAreas";
-import HeroStage from "@/components/HeroStage";
+import HeroShell from "@/components/HeroShell";
 import SiteHeader from "@/components/SiteHeader";
-import silk from "@/hero-silk.webp";
-import depth from "@/tru-goldfinch-depth.webp";
-import portrait from "@/tru-goldfinch-hd.webp";
 import wordmark from "@/wordmark-tru-aesthetics.webp";
 
 export default function Hero() {
   return (
-    <HeroStage colorUrl={portrait.src} depthUrl={depth.src}>
+    <HeroShell>
       <noscript>
-        <style>{".hero-anim { animation: none; }"}</style>
+        <style>
+          {
+            ".hero-anim { animation: none; } .hero-reveal, .hero-veil { opacity: 1; transform: none; filter: none; }"
+          }
+        </style>
       </noscript>
-
-      <Image
-        src={silk}
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="hero-anim hero-silk -z-10 object-cover"
-      />
 
       <SiteHeader />
 
-      <div
-        data-tour-fade
-        className="absolute inset-x-5 top-[88px] lg:inset-x-[6%] lg:top-[22%]"
-      >
-        <h1>
+      {/* Hidden while the film plays; fades in, one line after another, in the open space
+          on the left of its last frame (at the foot of the screen on phones). */}
+      <div className="absolute inset-x-5 bottom-[9%] z-10 text-center lg:inset-x-auto lg:top-1/2 lg:bottom-auto lg:left-[6%] lg:w-[42%] lg:-translate-y-1/2 lg:text-left">
+        <p
+          className="hero-reveal text-sm font-medium tracking-[0.2em] text-brand-deep uppercase lg:text-base"
+          style={{ "--reveal-delay": "0s" } as React.CSSProperties}
+        >
+          Experts in timeless beauty
+        </p>
+        <h1
+          className="hero-reveal mt-4 lg:mt-6"
+          style={{ "--reveal-delay": "0.35s" } as React.CSSProperties}
+        >
           <Image
             src={wordmark}
             alt="Tru Aesthetics"
             priority
             quality={90}
-            sizes="(min-width: 1024px) 88vw, 90vw"
-            className="hero-anim hero-wordmark h-auto w-full"
+            sizes="(min-width: 1024px) 42vw, 90vw"
+            className="h-auto w-full"
           />
         </h1>
-
-        <div className="relative z-20 mt-4 flex flex-col items-center gap-1 text-center lg:mt-[2.5vw] lg:flex-row lg:justify-between lg:text-left">
-          <p className="hero-anim hero-slide-left text-sm font-medium tracking-wide text-ink-muted uppercase lg:text-lg">
-            Experts in timeless beauty
-          </p>
-          <p className="hero-anim hero-slide-right text-sm text-ink-muted lg:text-lg">
-            Creating looks that turn every head
-          </p>
-        </div>
-      </div>
-
-      <div className="hero-anim hero-portrait absolute inset-0 z-10">
-        <Image
-          src={portrait}
-          alt="Smiling man in a checked shirt"
-          priority
-          quality={90}
-          sizes="(min-width: 1024px) 62vw, 160vw"
-          data-hero-portrait
-          className="absolute top-[36%] left-1/2 h-[84%] w-auto max-w-none -translate-x-1/2 lg:top-[9%] lg:h-[116%]"
-        />
-        <canvas
+        <span
           aria-hidden="true"
-          className="absolute inset-0 size-full opacity-0"
+          className="hero-reveal mx-auto mt-6 block h-px w-16 bg-brand lg:mx-0 lg:mt-8"
+          style={{ "--reveal-delay": "0.8s" } as React.CSSProperties}
         />
-      </div>
-
-      <svg
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-20 size-full"
-      >
-        <line
-          data-tour-leader
-          className="stroke-brand-deep"
-          strokeWidth="1"
-          style={{ opacity: 0 }}
-        />
-      </svg>
-
-      <div
-        data-tour-markers
-        aria-hidden="true"
-        className="invisible absolute inset-0 z-20 opacity-0"
-      >
-        {HEAD_AREAS.map(({ id }) => (
-          <span key={id} data-tour-marker className="hero-marker" />
-        ))}
-      </div>
-
-      {HEAD_AREAS.map(({ id, name, description }) => (
-        <article
-          key={id}
-          data-tour-card
-          className="invisible absolute inset-x-4 bottom-6 z-30 rounded-3xl bg-pill p-5 opacity-0 shadow-[0_10px_30px_rgba(45,70,75,0.18)] lg:inset-x-auto lg:top-[32%] lg:bottom-auto lg:left-[50%] lg:w-[420px] lg:p-8"
+        <p
+          className="hero-reveal mt-5 text-lg text-ink-muted lg:mt-6 lg:text-2xl"
+          style={{ "--reveal-delay": "1s" } as React.CSSProperties}
         >
-          <h2 className="font-display text-3xl text-foreground lg:mt-2 lg:text-4xl">
-            {name}
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-ink-muted lg:mt-3 lg:text-base">
-            {description}
-          </p>
-        </article>
-      ))}
-
-      {/* Fades the foot of the scene into the doctor section that follows the tour. */}
-      <div
-        data-tour-seam
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-40 bg-gradient-to-b from-transparent to-[#eef3f3] opacity-0 lg:h-56"
-      />
-
-      <div
-        data-tour-about
-        className="invisible absolute inset-x-0 bottom-0 z-30 rounded-t-3xl bg-[#eef3f3] p-5 pb-7 opacity-0 shadow-[0_-10px_30px_rgba(45,70,75,0.14)] lg:inset-x-auto lg:top-[calc(50%+3rem)] lg:right-[6%] lg:bottom-auto lg:left-[50%] lg:-translate-y-1/2 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none"
-      >
-        <AboutContent />
+          Creating looks that turn every head
+        </p>
+        <p
+          className="hero-reveal mt-2 text-sm text-ink-muted/80 lg:text-base"
+          style={{ "--reveal-delay": "1.3s" } as React.CSSProperties}
+        >
+          Cosmetic surgery &amp; hair transplant · Mangaluru
+        </p>
       </div>
-    </HeroStage>
+    </HeroShell>
   );
 }
