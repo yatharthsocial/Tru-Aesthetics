@@ -13,7 +13,7 @@ export default function SiteHeader({ base = "" }: { base?: string }) {
           alt="Tru Aesthetics"
           priority
           sizes="52px"
-          className="h-11 w-auto xl:h-[52px]"
+          className="h-10 w-auto lg:h-11 xl:h-[52px]"
         />
       </Link>
       <SiteMenu base={base} />

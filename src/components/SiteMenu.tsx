@@ -39,7 +39,7 @@ function BurgerIcon({ open }: { open: boolean }) {
 }
 
 const BUTTON =
-  "flex size-12 items-center justify-center rounded-full bg-pill/90 text-foreground shadow-[0_6px_18px_rgba(45,70,75,0.16)] backdrop-blur-sm transition-colors hover:bg-foreground hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-deep";
+  "flex size-10 items-center justify-center rounded-full bg-pill/90 lg:size-12 text-foreground shadow-[0_6px_18px_rgba(45,70,75,0.16)] backdrop-blur-sm transition-colors hover:bg-foreground hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-deep";
 
 /**
  * The site menu: a hamburger button that opens a full-screen panel with every section,

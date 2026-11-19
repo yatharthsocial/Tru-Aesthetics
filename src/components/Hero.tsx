@@ -18,7 +18,7 @@ export default function Hero() {
 
       {/* Hidden while the film plays; fades in, one line after another, in the open space
           on the left of its last frame (at the foot of the screen on phones). */}
-      <div className="absolute inset-x-5 bottom-[9%] z-10 text-center lg:inset-x-auto lg:top-1/2 lg:bottom-auto lg:left-[6%] lg:w-[42%] lg:-translate-y-1/2 lg:text-left">
+      <div className="absolute inset-x-5 bottom-[max(6.5rem,11%)] z-10 text-center lg:inset-x-auto lg:top-1/2 lg:bottom-auto lg:left-[6%] lg:w-[42%] lg:-translate-y-1/2 lg:text-left">
         <p
           className="hero-reveal text-sm font-medium tracking-[0.2em] text-brand-deep uppercase lg:text-base"
           style={{ "--reveal-delay": "0s" } as React.CSSProperties}
