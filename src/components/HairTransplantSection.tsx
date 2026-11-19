@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
 import { HEAD_AREAS } from "@/components/headAreas";
+import { getSmoothScroll } from "@/lib/smoothScroll";
 import portrait from "@/tru-goldfinch-hd.webp";
 
 const pad = (value: number) => String(value).padStart(2, "0");
@@ -223,99 +224,208 @@ function DesktopTour() {
   );
 }
 
-/** Phones: the man with every area numbered, then the areas listed with their notes. */
-function MobileList() {
+/** Moves the pointer to where the scroll has reached in the track; returns where it is. */
+function placePointer(track: HTMLElement, dot: HTMLElement) {
+  const range = track.offsetHeight - window.innerHeight;
+  if (range <= 0) return null;
+  const passed = -track.getBoundingClientRect().top;
+  const progress = Math.min(1, Math.max(0, passed / range)) * COUNT;
+  const at = pointAt(Math.min(progress, COUNT - 0.0001));
+  const from = Math.floor(at);
+  const t = at - from;
+  const a = HEAD_AREAS[from].anchor;
+  const b = HEAD_AREAS[Math.min(from + 1, COUNT - 1)].anchor;
+  dot.style.left = `${(a.x + (b.x - a.x) * t) * 100}%`;
+  dot.style.top = `${(a.y + (b.y - a.y) * t) * 100}%`;
+  return { t, index: Math.round(at) };
+}
+
+const MOBILE_STEP_SVH = 65;
+
+/**
+ * Phones: the heading scrolls by, then the man stays on screen while the pointer glides over
+ * his head from area to area, with the area's name and note underneath.
+ */
+function MobileTour() {
+  const track = useRef<HTMLDivElement>(null);
+  const pointer = useRef<HTMLSpanElement>(null);
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    let frame = 0;
+    let shown = 0;
+    const update = () => {
+      frame = 0;
+      if (!track.current || !pointer.current) return;
+      const placed = placePointer(track.current, pointer.current);
+      if (placed && placed.index !== shown) {
+        shown = placed.index;
+        setActive(placed.index);
+      }
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, []);
+
+  // Tapping a number glides the page to where the pointer rests on that area.
+  const goTo = (index: number) => {
+    const el = track.current;
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    const range = el.offsetHeight - window.innerHeight;
+    const target = top + (range * (index + REST / 2)) / COUNT;
+    const lenis = getSmoothScroll();
+    if (lenis) lenis.scrollTo(target, { duration: 1.2 });
+    else window.scrollTo({ top: target, behavior: "smooth" });
+  };
+
+  const area = HEAD_AREAS[active];
+
   return (
-    <Reveal className="px-5 pt-16 pb-20">
-      <p
-        data-reveal
-        className="text-sm font-medium tracking-[0.2em] text-brand-deep uppercase"
-      >
-        Hair transplant
-      </p>
-      <h2
-        id="hair-transplant-heading-mobile"
-        data-reveal
-        className="mt-3 font-display text-4xl leading-tight text-foreground sm:text-5xl"
-      >
-        Planned <span className="text-brand">area by area</span>
-      </h2>
-      <p data-reveal className="mt-4 text-base leading-relaxed text-ink-muted">
-        Every head of hair is different. These are the five areas we plan for,
-        so your result looks natural from every angle.
-      </p>
+    <>
+      <Reveal className="px-5 pt-16 text-center">
+        <p
+          data-reveal
+          className="text-sm font-medium tracking-[0.2em] text-brand-deep uppercase"
+        >
+          Our speciality
+        </p>
+        <h2
+          id="hair-transplant-heading-mobile"
+          data-reveal
+          className="mt-2 font-display text-4xl leading-tight text-foreground sm:text-5xl"
+        >
+          Hair <span className="text-brand">transplant</span>
+        </h2>
+        <p
+          data-reveal
+          className="mx-auto mt-3 max-w-md text-base leading-relaxed text-ink-muted"
+        >
+          Every head of hair is different. These are the five areas we plan for,
+          so your result looks natural from every angle.
+        </p>
+      </Reveal>
 
       <div
-        data-reveal
-        className="relative mx-auto mt-8 aspect-[1500/1300] w-full max-w-[420px] overflow-hidden"
+        ref={track}
+        className="mt-4 h-[var(--track)]"
+        style={
+          {
+            "--track": `${100 + COUNT * MOBILE_STEP_SVH}svh`,
+          } as CSSProperties
+        }
       >
-        <div className="absolute inset-x-0 top-0 aspect-[1500/1872]">
-          <Image
-            src={portrait}
-            alt="A patient's head, with the areas a hair transplant plans for marked on it"
-            fill
-            quality={90}
-            sizes="420px"
-            className="object-contain"
-            style={MASK_STYLE}
-          />
-          {HEAD_AREAS.map(({ id, anchor }, index) => (
-            <span
-              key={id}
-              aria-hidden="true"
-              className="absolute flex size-[18px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-brand-deep text-[10px] font-medium text-white ring-2 ring-white"
-              style={{ left: `${anchor.x * 100}%`, top: `${anchor.y * 100}%` }}
-            >
-              {index + 1}
-            </span>
-          ))}
-        </div>
-      </div>
+        <div className="sticky top-0 flex h-svh flex-col justify-center gap-4 px-5 py-6">
+          {/* Where you are among the five areas. */}
+          <ol className="flex justify-center gap-2" aria-label="Areas">
+            {HEAD_AREAS.map(({ id, name }, index) => {
+              const isActive = index === active;
+              return (
+                <li key={id}>
+                  <button
+                    type="button"
+                    aria-label={name}
+                    aria-current={isActive ? "step" : undefined}
+                    onClick={() => goTo(index)}
+                    className={`flex h-8 min-w-8 items-center justify-center rounded-full px-2.5 text-xs font-medium transition-colors duration-500 ${
+                      isActive
+                        ? "bg-brand-deep text-white"
+                        : index < active
+                          ? "bg-brand/25 text-brand-deep"
+                          : "border border-foreground/20 text-ink-muted"
+                    }`}
+                  >
+                    {pad(index + 1)}
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
 
-      <ol className="mt-6 border-t border-foreground/15">
-        {HEAD_AREAS.map(({ id, name, description }, index) => (
-          <li
-            key={id}
-            data-reveal
-            className="flex gap-4 border-b border-foreground/15 py-5"
+          {/* The man, with the pointer gliding over his head. */}
+          <div className="relative mx-auto aspect-[1500/1300] w-[min(88vw,calc((100svh-19rem)*1.15))] overflow-hidden">
+            <div className="absolute inset-x-0 top-0 aspect-[1500/1872]">
+              <Image
+                src={portrait}
+                alt="A patient's head, with the areas a hair transplant plans for marked on it"
+                fill
+                quality={90}
+                sizes="88vw"
+                className="object-contain"
+                style={MASK_STYLE}
+              />
+              {HEAD_AREAS.map(({ id, anchor }, index) => (
+                <span
+                  key={id}
+                  aria-hidden="true"
+                  className={`absolute size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand ring-2 ring-white transition-opacity duration-500 ${
+                    index === active ? "opacity-0" : "opacity-60"
+                  }`}
+                  style={{
+                    left: `${anchor.x * 100}%`,
+                    top: `${anchor.y * 100}%`,
+                  }}
+                />
+              ))}
+              <span
+                ref={pointer}
+                aria-hidden="true"
+                className="absolute"
+                style={{
+                  left: `${HEAD_AREAS[0].anchor.x * 100}%`,
+                  top: `${HEAD_AREAS[0].anchor.y * 100}%`,
+                }}
+              >
+                <span className="hero-marker" data-active="true" />
+              </span>
+            </div>
+          </div>
+
+          <div
+            className="mx-auto min-h-[8.5rem] max-w-md text-center"
+            aria-live="polite"
           >
-            <span className="w-6 pt-1.5 text-sm font-medium text-brand-deep">
-              {pad(index + 1)}
-            </span>
-            <div>
-              <h3 className="font-display text-2xl leading-tight text-foreground">
-                {name}
+            <div key={area.id} className="service-in">
+              <p className="text-xs font-medium tracking-[0.2em] text-brand-deep uppercase">
+                {pad(active + 1)} · Area
+              </p>
+              <h3 className="mt-1.5 font-display text-3xl leading-tight text-foreground">
+                {area.name}
               </h3>
-              <p className="mt-1.5 text-base leading-relaxed text-ink-muted">
-                {description}
+              <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                {area.description}
               </p>
             </div>
-          </li>
-        ))}
-      </ol>
-    </Reveal>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
 export default function HairTransplantSection() {
-  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
-  useEffect(() => {
-    const query = window.matchMedia("(min-width: 1024px)");
-    const update = () => setIsDesktop(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
-
   return (
     <section
       id="hair-transplant"
-      aria-labelledby={
-        isDesktop ? "hair-transplant-heading" : "hair-transplant-heading-mobile"
-      }
+      aria-label="Hair transplant"
       className="relative bg-[#eef3f3]"
     >
-      {isDesktop ? <DesktopTour /> : <MobileList />}
+      {/* Both layouts are in the page from the first paint; CSS shows the one that fits. */}
+      <div className="hidden lg:block">
+        <DesktopTour />
+      </div>
+      <div className="lg:hidden">
+        <MobileTour />
+      </div>
     </section>
   );
 }
