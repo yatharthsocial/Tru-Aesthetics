@@ -169,13 +169,6 @@ export default async function DoctorPage({
                   ))}
                 </ul>
               </div>
-
-              <Link
-                href="/#contact"
-                className="mt-10 inline-block rounded-full bg-brand px-10 py-3.5 text-base font-medium whitespace-nowrap text-ink shadow-[0_8px_20px_rgba(18,122,115,0.28)] transition-colors hover:bg-brand-deep hover:text-white"
-              >
-                Book a consultation
-              </Link>
             </div>
           </div>
         </section>

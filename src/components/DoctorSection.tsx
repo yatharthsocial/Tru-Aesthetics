@@ -118,7 +118,7 @@ function Portrait({ slide }: { slide: Slide }) {
 function Badge({ slide }: { slide: Slide }) {
   return (
     <div className={`max-w-[230px] px-6 py-4 ${CARD}`}>
-      <p className="font-display text-3xl leading-none text-brand-deep lg:text-4xl">
+      <p className="display-weighted font-display text-3xl leading-none text-brand-deep lg:text-4xl">
         {slide.badge.value}
       </p>
       <p className="mt-1.5 text-sm leading-snug text-ink-muted">
@@ -172,7 +172,7 @@ function Details({
           {slide.credentials.map(({ value, label }) => (
             <div key={label} className="flex-1 px-5 first:pl-0">
               <dt className="sr-only">{label}</dt>
-              <dd className="font-display text-2xl leading-none text-brand-deep lg:text-3xl">
+              <dd className="display-weighted font-display text-2xl leading-none text-brand-deep lg:text-3xl">
                 {value}
               </dd>
               <dd className="mt-1.5 text-sm text-ink-muted">{label}</dd>

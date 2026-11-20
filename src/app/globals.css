@@ -10,7 +10,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand: #28beb3;
-  --color-brand-deep: #127a73;
+  --color-brand-deep: #0b5f59;
   --color-ink: #1f3034;
   --color-ink-muted: #2a3b3f;
   --color-pill: #f1f6f6;
@@ -138,6 +138,13 @@ html.lenis body {
     transform: none;
     filter: none;
   }
+}
+
+/* The display face (Italiana) has a single, thin weight. For short credentials that need
+   to stand out, a fine outline in the text's own colour gives it more weight. */
+.display-weighted {
+  -webkit-text-stroke: 0.025em currentColor;
+  paint-order: stroke fill;
 }
 
 .hero-marker {
