@@ -121,25 +121,23 @@ function Finale() {
 function Heading({ id }: { id: string }) {
   return (
     <>
-      <p
-        data-reveal
-        className="text-sm font-medium tracking-[0.2em] text-brand-deep uppercase"
-      >
-        Our services
+      <p data-reveal className="text-sm font-medium text-ink-muted">
+        Our Services
       </p>
       <h2
         id={id}
         data-reveal
         className="mt-3 font-display text-4xl leading-tight text-foreground sm:text-5xl xl:text-6xl"
       >
-        Treatments, <span className="text-brand">tailored</span> to you
+        Treatments, <span className="text-brand">Tailored</span> To You
       </h2>
       <p
         data-reveal
         className="mt-4 max-w-md text-base leading-relaxed text-ink-muted"
       >
-        See the area each treatment focuses on. Every plan starts with a
-        consultation.
+        See the area each treatment focuses on.
+        <br />
+        Every plan starts with a consultation.
       </p>
     </>
   );
@@ -161,20 +159,20 @@ function DesktopServices() {
           {/* Left: the heading, then the treatments. */}
           <div>
             <Heading id="services-heading" />
-            <ol className="mt-12 border-t border-foreground/15">
+            <ol className="mt-10 space-y-1">
               {SERVICES.map(({ name, category, featured }, index) => {
                 const isActive = index === active;
                 return (
                   <li
                     key={name}
                     data-reveal
-                    className="border-b border-foreground/15"
+                    className="rounded-2xl px-4 odd:bg-white/55"
                   >
                     <button
                       type="button"
                       aria-current={isActive ? "step" : undefined}
                       onClick={() => goTo(index)}
-                      className="group relative flex w-full items-center gap-6 py-5 text-left xl:py-6"
+                      className="group relative flex w-full items-center gap-5 py-4 text-left xl:py-5"
                     >
                       <span
                         aria-hidden="true"
@@ -190,7 +188,7 @@ function DesktopServices() {
                         {pad(index + 1)}
                       </span>
                       <span
-                        className={`flex-1 font-display text-4xl leading-tight transition-colors duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] xl:text-[2.75rem] ${
+                        className={`flex-1 font-display text-3xl leading-tight tracking-[0.06em] transition-colors xl:text-4xl duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
                           isActive
                             ? "text-brand-deep"
                             : "text-foreground/60 group-hover:text-foreground"
@@ -201,8 +199,8 @@ function DesktopServices() {
                       <span
                         className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
                           featured
-                            ? "bg-brand text-ink"
-                            : "border border-foreground/20 text-ink-muted"
+                            ? "bg-brand text-white"
+                            : "border border-brand text-brand-deep"
                         }`}
                       >
                         {featured ? "Our speciality" : category}
@@ -318,14 +316,14 @@ function MobileServices() {
                 className="service-in"
                 style={{ animationDuration: `${SYNC_S}s` }}
               >
-                <p className="font-display text-3xl leading-tight text-brand-deep">
+                <p className="font-display text-3xl leading-tight tracking-[0.06em] text-brand-deep">
                   {current.name}
                 </p>
                 <span
                   className={`mt-2 inline-block rounded-full px-3 py-1 text-xs font-medium ${
                     current.featured
-                      ? "bg-brand text-ink"
-                      : "border border-foreground/20 text-ink-muted"
+                      ? "bg-brand text-white"
+                      : "border border-brand text-brand-deep"
                   }`}
                 >
                   {current.featured ? "Our speciality" : current.category}

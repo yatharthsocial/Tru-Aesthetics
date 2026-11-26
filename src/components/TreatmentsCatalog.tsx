@@ -177,159 +177,134 @@ export default function TreatmentsCatalog() {
           </p>
         </div>
 
-        <div className="mt-12 grid items-start gap-8 lg:mt-16 lg:grid-cols-[4fr_8fr] lg:gap-12">
-          {/* Category picker, search and Hair Studio: sticky beside the cards on desktop. */}
-          <aside data-reveal className="lg:sticky lg:top-28">
-            <div
-              role="tablist"
-              aria-label="Treatment type"
-              className="grid grid-cols-2 gap-3 lg:grid-cols-1"
-            >
-              {TREATMENT_GROUPS.map(({ id, label, intro, items }) => {
-                const selected = id === groupId;
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    aria-controls="treatments-panel"
-                    onClick={() => {
-                      setGroupId(id);
-                      setOpen(null);
-                      relayout();
-                    }}
-                    className={`relative overflow-hidden rounded-3xl p-5 text-left transition-[background-color,box-shadow,color] duration-500 lg:p-6 ${
+        {/* Toolbar: the category switch on the left, search on the right. */}
+        <div
+          data-reveal
+          className="mt-12 flex flex-col gap-4 md:flex-row md:items-center md:justify-between lg:mt-16"
+        >
+          <div
+            role="tablist"
+            aria-label="Treatment type"
+            className="flex w-full shrink-0 rounded-full bg-foreground/[0.07] p-1.5 sm:w-auto sm:self-start md:self-auto"
+          >
+            {TREATMENT_GROUPS.map(({ id, label, items }) => {
+              const selected = id === groupId;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  aria-controls="treatments-panel"
+                  onClick={() => {
+                    setGroupId(id);
+                    setOpen(null);
+                    relayout();
+                  }}
+                  className={`flex flex-1 items-center justify-center gap-2.5 rounded-full px-5 py-3 text-sm font-semibold whitespace-nowrap transition-[background-color,color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:flex-none sm:px-7 ${
+                    selected
+                      ? "bg-brand-deep text-white shadow-[0_10px_24px_-8px_rgba(11,95,89,0.6)]"
+                      : "text-foreground hover:text-brand-deep"
+                  }`}
+                >
+                  {label}
+                  <span
+                    className={`flex size-6 items-center justify-center rounded-full text-xs font-medium transition-colors duration-500 ${
                       selected
-                        ? "bg-foreground text-white shadow-[0_18px_40px_rgba(31,48,52,0.3)]"
-                        : "bg-pill/80 text-foreground shadow-[0_8px_24px_rgba(45,70,75,0.1)] hover:bg-white"
+                        ? "bg-white/20 text-white"
+                        : "bg-foreground/[0.08] text-ink-muted"
                     }`}
                   >
-                    <span className="flex items-baseline justify-between gap-3">
-                      <span className="font-display text-lg leading-none whitespace-nowrap sm:text-3xl">
-                        {label}
-                      </span>
-                      <span
-                        className={`font-display text-2xl leading-none sm:text-5xl ${
-                          selected ? "text-brand" : "text-brand/60"
-                        }`}
-                      >
-                        {items.length}
-                      </span>
-                    </span>
-                    <span
-                      className={`grid transition-[grid-template-rows,opacity] duration-500 ${
-                        selected
-                          ? "grid-rows-[1fr] opacity-100"
-                          : "grid-rows-[0fr] opacity-0"
-                      } hidden lg:grid`}
-                    >
-                      <span className="overflow-hidden">
-                        <span className="block pt-4 text-sm leading-relaxed text-white/75">
-                          {intro}
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <label className="mt-4 flex items-center gap-3 rounded-full bg-pill/80 px-5 py-3 shadow-[0_8px_24px_rgba(45,70,75,0.08)] ring-brand/40 focus-within:bg-white focus-within:ring-2">
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 20 20"
-                className="size-4 shrink-0 text-ink-muted"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-              >
-                <circle cx="9" cy="9" r="6" />
-                <path d="m14 14 3.5 3.5" />
-              </svg>
-              <span className="sr-only">Search treatments</span>
-              <input
-                type="search"
-                value={query}
-                onChange={(event) => {
-                  setQuery(event.target.value);
-                  setOpen(null);
-                  relayout();
-                }}
-                placeholder={`Search ${group.label.toLowerCase()} treatments`}
-                className="w-full bg-transparent text-sm text-foreground placeholder:text-ink-muted/70 focus:outline-none"
-              />
-            </label>
-
-            <div className="mt-4 hidden overflow-hidden rounded-3xl bg-gradient-to-br from-brand to-brand-deep p-6 text-white shadow-[0_18px_40px_rgba(18,122,115,0.3)] lg:block">
-              <p className="text-xs font-medium tracking-[0.2em] text-white/80 uppercase">
-                Also at our clinic
-              </p>
-              <h3 className="mt-2 font-display text-3xl">{HAIR_STUDIO.name}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/90">
-                {HAIR_STUDIO.description}
-              </p>
-              <Link
-                href="#contact"
-                className="mt-4 inline-block rounded-full bg-white px-6 py-2.5 text-sm font-medium text-brand-deep transition-colors hover:bg-ink hover:text-white"
-              >
-                Book a visit
-              </Link>
-            </div>
-          </aside>
-
-          <div
-            id="treatments-panel"
-            role="tabpanel"
-            aria-label={`${group.label} treatments`}
-          >
-            <p className="mb-4 text-sm leading-relaxed text-ink-muted lg:hidden">
-              {group.intro}
-            </p>
-            {shown.length > 0 ? (
-              <ul
-                key={`${groupId}-${search}`}
-                className="grid gap-4 sm:grid-cols-2 lg:gap-5"
-              >
-                {shown.map(({ treatment, number }, i) => (
-                  <TreatmentCard
-                    key={treatment.name}
-                    treatment={treatment}
-                    number={number}
-                    open={open === treatment.name}
-                    delay={Math.min(i, 8) * 50}
-                    onToggle={() => {
-                      setOpen(open === treatment.name ? null : treatment.name);
-                      relayout();
-                    }}
-                  />
-                ))}
-              </ul>
-            ) : (
-              <div className="rounded-3xl bg-pill/80 p-8 text-center text-ink-muted">
-                No {group.label.toLowerCase()} treatments match “{query.trim()}
-                ”.
-              </div>
-            )}
-            {otherMatches > 0 && (
-              <button
-                type="button"
-                onClick={() => {
-                  setGroupId(other.id);
-                  setOpen(null);
-                  relayout();
-                }}
-                className="mt-5 text-sm font-medium text-brand-deep underline-offset-4 hover:underline"
-              >
-                {otherMatches} {other.label.toLowerCase()} treatment
-                {otherMatches > 1 ? "s" : ""} also match “{query.trim()}” →
-              </button>
-            )}
+                    {items.length}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
-          {/* Hair Studio sits under the cards on phones and tablets. */}
-          <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand to-brand-deep p-6 text-white shadow-[0_18px_40px_rgba(18,122,115,0.3)] lg:hidden">
+          <label className="flex w-full items-center gap-3 rounded-full bg-white/80 px-5 py-3.5 shadow-[0_8px_24px_rgba(45,70,75,0.08)] ring-1 ring-foreground/10 transition-shadow focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/50 md:w-[340px] lg:w-[400px]">
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 20 20"
+              className="size-4 shrink-0 text-ink-muted"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            >
+              <circle cx="9" cy="9" r="6" />
+              <path d="m14 14 3.5 3.5" />
+            </svg>
+            <span className="sr-only">Search treatments</span>
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setOpen(null);
+                relayout();
+              }}
+              placeholder={`Search ${group.label.toLowerCase()} treatments`}
+              className="w-full bg-transparent text-sm text-foreground placeholder:text-ink-muted/70 focus:outline-none"
+            />
+          </label>
+        </div>
+
+        <div
+          id="treatments-panel"
+          role="tabpanel"
+          aria-label={`${group.label} treatments`}
+          className="mt-6"
+        >
+          <p
+            key={groupId}
+            className="service-in mb-8 max-w-3xl text-base leading-relaxed text-ink-muted"
+          >
+            {group.intro}
+          </p>
+          {shown.length > 0 ? (
+            <ul
+              key={`${groupId}-${search}`}
+              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
+            >
+              {shown.map(({ treatment, number }, i) => (
+                <TreatmentCard
+                  key={treatment.name}
+                  treatment={treatment}
+                  number={number}
+                  open={open === treatment.name}
+                  delay={Math.min(i, 8) * 50}
+                  onToggle={() => {
+                    setOpen(open === treatment.name ? null : treatment.name);
+                    relayout();
+                  }}
+                />
+              ))}
+            </ul>
+          ) : (
+            <div className="rounded-3xl bg-pill/80 p-8 text-center text-ink-muted">
+              No {group.label.toLowerCase()} treatments match “{query.trim()}”.
+            </div>
+          )}
+          {otherMatches > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                setGroupId(other.id);
+                setOpen(null);
+                relayout();
+              }}
+              className="mt-5 text-sm font-medium text-brand-deep underline-offset-4 hover:underline"
+            >
+              {otherMatches} {other.label.toLowerCase()} treatment
+              {otherMatches > 1 ? "s" : ""} also match “{query.trim()}” →
+            </button>
+          )}
+        </div>
+
+        {/* Hair Studio: a wide banner under the treatments. */}
+        <div className="mt-10 flex flex-col gap-5 overflow-hidden rounded-3xl bg-gradient-to-br from-brand to-brand-deep p-6 text-white shadow-[0_18px_40px_rgba(18,122,115,0.3)] sm:flex-row sm:items-center sm:justify-between lg:p-8">
+          <div className="max-w-2xl">
             <p className="text-xs font-medium tracking-[0.2em] text-white/80 uppercase">
               Also at our clinic
             </p>
@@ -337,13 +312,13 @@ export default function TreatmentsCatalog() {
             <p className="mt-2 text-sm leading-relaxed text-white/90">
               {HAIR_STUDIO.description}
             </p>
-            <Link
-              href="#contact"
-              className="mt-4 inline-block rounded-full bg-white px-6 py-2.5 text-sm font-medium text-brand-deep"
-            >
-              Book a visit
-            </Link>
           </div>
+          <Link
+            href="#contact"
+            className="inline-block shrink-0 self-start rounded-full bg-white px-6 py-2.5 text-sm font-medium text-brand-deep transition-colors hover:bg-ink hover:text-white sm:self-center"
+          >
+            Book a visit
+          </Link>
         </div>
       </Reveal>
     </section>

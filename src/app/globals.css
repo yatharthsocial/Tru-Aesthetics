@@ -14,7 +14,7 @@
   --color-ink: #1f3034;
   --color-ink-muted: #2a3b3f;
   --color-pill: #f1f6f6;
-  --font-sans: var(--font-ubuntu);
+  --font-sans: var(--font-inter);
   --font-display: var(--font-italiana);
 }
 

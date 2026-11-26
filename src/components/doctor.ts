@@ -27,7 +27,13 @@ export const TEAM = [
     slug: "prof-dr-mohan-thomas",
     name: "Prof. Dr. Mohan Thomas",
     degrees: "M.D (USA) · FACS (USA)",
-    role: "American-trained, triple-boarded cosmetic surgeon and facial plastic surgeon",
+    role: "Cosmetic & Facial Plastic Surgeon",
+    intro:
+      "Prof. Dr. Mohan Thomas is an American-trained, triple-boarded cosmetic surgeon and facial plastic surgeon, and a Fellow of the American College of Surgeons. A former Visiting Scholar at Mount Sinai Medical Center, New York, he is a Clinical Professor of Surgery at DY Patil University and a consultant at Breach Candy Hospital, Mumbai. Trú Aesthetics works in association with his Mumbai practice.",
+    credentials: [
+      { value: "Triple-boarded", label: "Cosmetic & facial surgery" },
+      { value: "M.D · FACS", label: "Trained in the USA" },
+    ],
     points: [
       "Visiting Scholar, Mount Sinai Medical Center, New York",
       "Clinical Professor of Surgery, DY Patil University, Mumbai",
@@ -39,8 +45,17 @@ export const TEAM = [
     slug: "dr-sana-aboobaker",
     name: "Dr. Sana Aboobaker",
     degrees: "MBBS · MS (ENT)",
-    role: "Otorhinolaryngologist",
-    points: ["Fellowship in Cochlear Implant Surgery, Mumbai"],
+    role: "Otorhinolaryngologist (ENT Surgeon)",
+    intro:
+      "Dr. Sana Aboobaker is an otorhinolaryngologist, a specialist in conditions of the ear, nose and throat. She holds an MBBS and an MS in ENT, and completed a fellowship in Cochlear Implant Surgery in Mumbai. Her specialist training adds valuable depth to our team, and she is committed to careful, thorough care that puts each patient's comfort, safety and wellbeing first.",
+    credentials: [
+      { value: "Fellowship", label: "Cochlear Implant Surgery, Mumbai" },
+      { value: "MBBS · MS", label: "Otorhinolaryngology (ENT)" },
+    ],
+    points: [
+      "MBBS, MS (ENT), Otorhinolaryngologist",
+      "Fellowship in Cochlear Implant Surgery, Mumbai",
+    ],
     story: [] as string[],
   },
 ];
@@ -56,7 +71,7 @@ export const DOCTORS = [
     points: DOCTOR.points,
     story: DOCTOR.story,
   },
-  ...TEAM.map((member) => ({ ...member, intro: "" })),
+  ...TEAM,
 ];
 
 export const doctorHref = (slug: string) => `/doctors/${slug}`;

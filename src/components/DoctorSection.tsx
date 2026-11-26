@@ -43,10 +43,12 @@ const SLIDES: Slide[] = [
   },
   {
     ...TEAM[0],
+    points: undefined,
     badge: { value: "FACS", label: "Fellow, American College of Surgeons" },
   },
   {
     ...TEAM[1],
+    points: undefined,
     badge: { value: "MS · ENT", label: "Otorhinolaryngologist" },
   },
 ];
@@ -138,7 +140,7 @@ function Details({
   const Heading = headingLevel;
   return (
     <>
-      <Heading className="font-display text-4xl leading-tight text-foreground sm:text-5xl xl:text-6xl">
+      <Heading className="font-display text-4xl leading-tight text-foreground sm:text-5xl lg:text-[2.6rem] lg:whitespace-nowrap xl:text-[3.25rem]">
         {slide.name}
       </Heading>
       <p className="mt-3 text-sm font-medium tracking-[0.15em] text-ink-muted uppercase">
@@ -147,7 +149,7 @@ function Details({
       <p className="mt-2 text-sm text-brand-deep">{slide.degrees}</p>
 
       {slide.intro && (
-        <p className="mt-6 border-l-2 border-brand pl-5 text-base leading-relaxed text-ink-muted xl:text-lg">
+        <p className="mt-6 border-l-2 border-brand pl-5 text-base leading-relaxed text-ink-muted lg:min-h-[9lh] xl:min-h-[8lh] xl:text-lg">
           {slide.intro}
         </p>
       )}
@@ -172,10 +174,12 @@ function Details({
           {slide.credentials.map(({ value, label }) => (
             <div key={label} className="flex-1 px-5 first:pl-0">
               <dt className="sr-only">{label}</dt>
-              <dd className="display-weighted font-display text-2xl leading-none text-brand-deep lg:text-3xl">
+              <dd className="display-weighted font-display text-2xl leading-none whitespace-nowrap text-brand-deep xl:text-3xl">
                 {value}
               </dd>
-              <dd className="mt-1.5 text-sm text-ink-muted">{label}</dd>
+              <dd className="mt-1.5 text-sm text-ink-muted lg:min-h-[2lh]">
+                {label}
+              </dd>
             </div>
           ))}
         </dl>
@@ -223,10 +227,8 @@ function PinnedShowcase() {
 
       gsap.set(portraits, { clipPath: hidden });
       gsap.set(portraits[0], { clipPath: shown });
-      gsap.set([...badges.slice(1), ...texts.slice(1)], {
-        autoAlpha: 0,
-        y: 48,
-      });
+      gsap.set(texts.slice(1), { autoAlpha: 0, y: 24, filter: "blur(6px)" });
+      gsap.set(badges.slice(1), { autoAlpha: 0, x: 24 });
 
       const tour = gsap.timeline({
         defaults: { ease: "none" },
@@ -236,7 +238,8 @@ function PinnedShowcase() {
           start: "top top",
           end: () => `+=${last * window.innerHeight * 1.3}`,
           anticipatePin: 1,
-          scrub: 1,
+          // Trails the scroll a little, so every change glides rather than snaps.
+          scrub: 1.2,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             if (bar) gsap.set(bar, { scaleX: self.progress });
@@ -245,35 +248,60 @@ function PinnedShowcase() {
         },
       });
 
-      // Each change: the old text lifts away, the new portrait wipes up over the old one,
-      // then the new text and badge settle in. Each doctor holds still for a stretch of scroll.
+      // Each change is one soft, overlapping crossfade (so there is never an empty moment):
+      // the new portrait wipes up over the old one while its photo eases back from a gentle
+      // zoom and the old one settles back; the old details drift up and blur out as the new
+      // ones rise into focus; the badge slides across. Each doctor then holds for a stretch.
+      const CHANGE = 1.3;
       for (let i = 1; i <= last; i++) {
-        const at = (i - 1) * 2 + 0.6;
-        tour.to(
-          [texts[i - 1], badges[i - 1]],
-          { autoAlpha: 0, y: -48, duration: 0.45, ease: "power2.in" },
-          at,
-        );
+        const at = (i - 1) * 2 + 0.5;
         tour.to(
           portraits[i - 1],
-          { scale: 0.94, duration: 0.8, ease: "power2.inOut" },
+          { scale: 0.95, duration: CHANGE, ease: "sine.inOut" },
           at,
         );
         tour.to(
           portraits[i],
-          { clipPath: shown, duration: 0.8, ease: "power3.inOut" },
+          { clipPath: shown, duration: CHANGE, ease: "power2.inOut" },
+          at,
+        );
+        tour.fromTo(
+          portraits[i].children,
+          { scale: 1.15 },
+          { scale: 1, duration: CHANGE, ease: "power2.out" },
           at,
         );
         tour.to(
-          [texts[i], badges[i]],
+          texts[i - 1],
+          {
+            autoAlpha: 0,
+            y: -24,
+            filter: "blur(6px)",
+            duration: 0.7,
+            ease: "sine.inOut",
+          },
+          at,
+        );
+        tour.to(
+          texts[i],
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.5,
-            ease: "power2.out",
-            stagger: 0.08,
+            filter: "blur(0px)",
+            duration: 0.8,
+            ease: "sine.out",
           },
-          at + 0.45,
+          at + 0.3,
+        );
+        tour.to(
+          badges[i - 1],
+          { autoAlpha: 0, x: -24, duration: 0.6, ease: "sine.inOut" },
+          at,
+        );
+        tour.to(
+          badges[i],
+          { autoAlpha: 1, x: 0, duration: 0.7, ease: "sine.out" },
+          at + 0.6,
         );
       }
       tour.to({}, { duration: 0.6 });

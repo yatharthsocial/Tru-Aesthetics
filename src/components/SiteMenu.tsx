@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import ClinicMap from "@/components/ClinicMap";
 import { CLINIC, telHref } from "@/components/clinic";
 import { getSmoothScroll } from "@/lib/smoothScroll";
 
@@ -49,6 +50,8 @@ const BUTTON =
 export default function SiteMenu({ base = "" }: { base?: string }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  // The map loads the first time the menu opens, not with the page.
+  const [mapWanted, setMapWanted] = useState(false);
   const panelId = useId();
   const opener = useRef<HTMLButtonElement>(null);
   const firstLink = useRef<HTMLAnchorElement>(null);
@@ -191,6 +194,7 @@ export default function SiteMenu({ base = "" }: { base?: string }) {
             <p className="mt-4 text-sm text-ink-muted sm:mt-6">
               {CLINIC.hours[0].days}, {CLINIC.hours[0].time}
             </p>
+            {mapWanted && <ClinicMap className="mt-5 max-w-md" />}
           </div>
         </div>
       </div>
@@ -205,7 +209,10 @@ export default function SiteMenu({ base = "" }: { base?: string }) {
         aria-label="Open menu"
         aria-expanded={open}
         aria-controls={panelId}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setMapWanted(true);
+          setOpen(true);
+        }}
         className={BUTTON}
       >
         <BurgerIcon open={false} />

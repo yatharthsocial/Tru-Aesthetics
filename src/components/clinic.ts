@@ -7,6 +7,8 @@ export const CLINIC = {
     "Lotus Paradise Plaza, Next to St Theresa School",
     "Bendoor, Mangaluru, Karnataka 575002",
   ],
+  /** What the embedded map searches for, to place its pin. */
+  mapQuery: "Lotus Paradise Plaza, Bendoor, Mangaluru, Karnataka 575002",
   mapUrl:
     "https://www.google.com/maps/search/?api=1&query=Lotus+Paradise+Plaza+Bendoor+Mangaluru+575002",
   phones: ["+91 78923 45181", "+91 89040 36655"],

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Italiana, Ubuntu } from "next/font/google";
+import { Inter, Italiana } from "next/font/google";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import "./globals.css";
 
-const ubuntu = Ubuntu({
-  variable: "--font-ubuntu",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const italiana = Italiana({
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     // silences attribute mismatches on this one element, not on its children.
     <html
       lang="en"
-      className={`${ubuntu.variable} ${italiana.variable} h-full antialiased`}
+      className={`${inter.variable} ${italiana.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
