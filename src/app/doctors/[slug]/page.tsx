@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import ContactSection from "@/components/ContactSection";
 import { DOCTORS, doctorHref, initials } from "@/components/doctor";
 import SiteHeader from "@/components/SiteHeader";
+import SocialLinks from "@/components/SocialLinks";
 import { DOCTOR_PHOTOS } from "@/components/doctorPhotos";
 import silk from "@/hero-silk.webp";
 
@@ -103,6 +104,11 @@ export default async function DoctorPage({
                     {doctor.intro}
                   </p>
                 )}
+                <SocialLinks
+                  name={doctor.name}
+                  links={doctor.social}
+                  className="mt-7"
+                />
               </div>
             </div>
           </div>

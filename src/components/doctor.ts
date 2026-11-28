@@ -1,3 +1,5 @@
+import type { SocialLink } from "@/components/SocialLinks";
+
 // Doctor and team details, as supplied by Trú Aesthetics.
 // `story` holds the longer write-up for each doctor's profile page (/doctors/[slug]), one
 // paragraph per entry. Add the clinic's text there; the section is hidden while it is empty.
@@ -20,6 +22,13 @@ export const DOCTOR = {
     "Facial Plastic and Cosmetic Surgeon",
   ],
   story: [] as string[],
+  social: [
+    { network: "facebook", url: "https://www.facebook.com/kirash.parthipady/" },
+    {
+      network: "instagram",
+      url: "https://www.instagram.com/kirashparthipady/",
+    },
+  ] as SocialLink[],
 };
 
 export const TEAM = [
@@ -40,6 +49,16 @@ export const TEAM = [
       "Consultant, Breach Candy Hospital, Mumbai",
     ],
     story: [] as string[],
+    social: [
+      {
+        network: "instagram",
+        url: "https://www.instagram.com/dr.mohan_thomas/",
+      },
+      {
+        network: "website",
+        url: "https://www.drmohanthomasaesthetics.com/about-doctor",
+      },
+    ] as SocialLink[],
   },
   {
     slug: "dr-sana-aboobaker",
@@ -57,6 +76,7 @@ export const TEAM = [
       "Fellowship in Cochlear Implant Surgery, Mumbai",
     ],
     story: [] as string[],
+    social: [] as SocialLink[],
   },
 ];
 
@@ -70,6 +90,7 @@ export const DOCTORS = [
     intro: DOCTOR.intro,
     points: DOCTOR.points,
     story: DOCTOR.story,
+    social: DOCTOR.social,
   },
   ...TEAM,
 ];

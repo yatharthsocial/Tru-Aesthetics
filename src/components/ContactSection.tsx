@@ -2,6 +2,7 @@ import Image from "next/image";
 import Reveal from "@/components/Reveal";
 import { CLINIC, telHref } from "@/components/clinic";
 import logo from "@/logo-true-aesthetics.webp";
+import yatharthLogo from "@/yatharth-logo-white.webp";
 
 function Icon({ d }: { d: string }) {
   return (
@@ -41,7 +42,7 @@ export default function ContactSection() {
     <footer
       id="contact"
       aria-labelledby="contact-heading"
-      className="relative isolate overflow-hidden bg-[#1f3034] px-5 pt-20 pb-10 text-[#d9e4e4] lg:px-[6%] lg:pt-28"
+      className="relative isolate overflow-hidden bg-[#1f3034] px-5 pt-20 pb-24 text-[#d9e4e4] lg:pb-28 lg:px-[6%] lg:pt-28"
     >
       <div
         aria-hidden="true"
@@ -178,10 +179,29 @@ export default function ContactSection() {
               </p>
             </div>
           </div>
-          <p className="text-xs text-white/50">
+          <p className="text-xs text-white/50 sm:text-right">
             © <CopyrightYear /> {name}. All rights reserved.
           </p>
         </div>
+
+        {/* The site credit, centred on its own line at the very foot. */}
+        <p className="mt-8 flex items-center justify-center gap-2 border-t border-white/5 pt-6 text-xs text-white/50">
+          Managed by
+          <a
+            href="https://www.yatharthsocial.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Yatharth (opens in a new tab)"
+            className="opacity-80 transition-opacity hover:opacity-100 focus-visible:opacity-100"
+          >
+            <Image
+              src={yatharthLogo}
+              alt="Yatharth"
+              sizes="64px"
+              className="h-4 w-auto"
+            />
+          </a>
+        </p>
       </Reveal>
     </footer>
   );
